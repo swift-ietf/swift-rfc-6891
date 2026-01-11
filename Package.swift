@@ -9,7 +9,7 @@ extension String {
 extension Target.Dependency {
     static var rfc6891: Self { .target(name: .rfc6891) }
     static var rfc1035: Self { .product(name: "RFC 1035", package: "swift-rfc-1035") }
-    static var standards: Self { .product(name: "Standards", package: "swift-standards") }
+    static var standards: Self { .product(name: "Standard Library Extensions", package: "swift-standard-library-extensions") }
     static var incits41986: Self { .product(name: "INCITS 4 1986", package: "swift-incits-4-1986") }
 }
 
@@ -26,9 +26,9 @@ let package = Package(
         .library(name: .rfc6891, targets: [.rfc6891])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-standards/swift-rfc-1035", from: "0.1.0"),
-        .package(url: "https://github.com/swift-standards/swift-standards", from: "0.10.0"),
-        .package(url: "https://github.com/swift-standards/swift-incits-4-1986", from: "0.6.3"),
+        .package(path: "../swift-rfc-1035"),
+        .package(path: "../../swift-primitives/swift-standard-library-extensions"),
+        .package(path: "../swift-incits-4-1986"),
     ],
     targets: [
         .target(
