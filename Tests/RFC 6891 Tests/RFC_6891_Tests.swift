@@ -18,21 +18,21 @@ struct RFC6891Tests {
 
     @Suite("Constants Tests")
     struct ConstantsTests {
-        @Test("OPT type is 41")
-        func optTypeIs41() {
+        @Test
+        func `OPT type is 41`() {
             #expect(RFC_6891.optType == 41)
         }
     }
 
     @Suite("Version Tests")
     struct VersionTests {
-        @Test("Version zero")
-        func versionZero() {
+        @Test
+        func `Version zero`() {
             #expect(RFC_6891.Version.zero.rawValue == 0)
         }
 
-        @Test("Version is comparable")
-        func versionComparable() {
+        @Test
+        func `Version is comparable`() {
             let v0 = RFC_6891.Version.zero
             let v1 = RFC_6891.Version(rawValue: 1)
             #expect(v0 < v1)
@@ -41,20 +41,20 @@ struct RFC6891Tests {
 
     @Suite("ExtendedRcode Tests")
     struct ExtendedRcodeTests {
-        @Test("Zero extended RCODE")
-        func zeroExtendedRcode() {
+        @Test
+        func `Zero extended RCODE`() {
             #expect(RFC_6891.ExtendedRcode.zero.rawValue == 0)
         }
 
-        @Test("Full RCODE calculation")
-        func fullRcodeCalculation() {
+        @Test
+        func `Full RCODE calculation`() {
             let extended = RFC_6891.ExtendedRcode(rawValue: 1)
             let full = extended.fullRcode(headerRcode: 0)
             #expect(full == 16) // BADVERS
         }
 
-        @Test("Known RCODE values")
-        func knownRcodeValues() {
+        @Test
+        func `Known RCODE values`() {
             #expect(RFC_6891.Rcode.noError == 0)
             #expect(RFC_6891.Rcode.badVersion == 16)
             #expect(RFC_6891.Rcode.badCookie == 23)
@@ -63,16 +63,16 @@ struct RFC6891Tests {
 
     @Suite("Option Tests")
     struct OptionTests {
-        @Test("Option code values")
-        func optionCodeValues() {
+        @Test
+        func `Option code values`() {
             #expect(RFC_6891.Option.Code.nsid.rawValue == 3)
             #expect(RFC_6891.Option.Code.clientSubnet.rawValue == 8)
             #expect(RFC_6891.Option.Code.cookie.rawValue == 10)
             #expect(RFC_6891.Option.Code.padding.rawValue == 12)
         }
 
-        @Test("Create and serialize option")
-        func createAndSerializeOption() {
+        @Test
+        func `Create and serialize option`() {
             let option = RFC_6891.Option(
                 code: .nsid,
                 data: Array("test".utf8)
@@ -94,8 +94,8 @@ struct RFC6891Tests {
 
     @Suite("OPT Record Tests")
     struct OPTRecordTests {
-        @Test("Default OPT record")
-        func defaultOptRecord() {
+        @Test
+        func `Default OPT record`() {
             let opt = RFC_6891.OPT.default
 
             #expect(opt.udpPayloadSize == 4096)
@@ -105,15 +105,15 @@ struct RFC6891Tests {
             #expect(opt.options.isEmpty)
         }
 
-        @Test("DNSSEC OPT record")
-        func dnssecOptRecord() {
+        @Test
+        func `DNSSEC OPT record`() {
             let opt = RFC_6891.OPT.dnssec
 
             #expect(opt.dnssecOK == true)
         }
 
-        @Test("Custom OPT record")
-        func customOptRecord() {
+        @Test
+        func `Custom OPT record`() {
             let opt = RFC_6891.OPT(
                 udpPayloadSize: 1232,
                 extendedRcode: .zero,
@@ -129,8 +129,8 @@ struct RFC6891Tests {
             #expect(opt.options.count == 1)
         }
 
-        @Test("Serialize OPT record")
-        func serializeOptRecord() {
+        @Test
+        func `Serialize OPT record`() {
             let opt = RFC_6891.OPT(
                 udpPayloadSize: 4096,
                 extendedRcode: .zero,
@@ -161,8 +161,8 @@ struct RFC6891Tests {
             #expect(buffer[10] == 0)
         }
 
-        @Test("Serialize OPT with DNSSEC flag")
-        func serializeOptWithDnssec() {
+        @Test
+        func `Serialize OPT with DNSSEC flag`() {
             let opt = RFC_6891.OPT(dnssecOK: true)
 
             var buffer: [UInt8] = []
@@ -172,8 +172,8 @@ struct RFC6891Tests {
             #expect(buffer[7] == 0x80)
         }
 
-        @Test("Serialize OPT with options")
-        func serializeOptWithOptions() {
+        @Test
+        func `Serialize OPT with options`() {
             let opt = RFC_6891.OPT(
                 options: [
                     RFC_6891.Option(code: .nsid, data: [0x01, 0x02, 0x03])
@@ -191,8 +191,8 @@ struct RFC6891Tests {
             #expect(buffer.count == 18)
         }
 
-        @Test("UDP payload size constants")
-        func udpPayloadSizeConstants() {
+        @Test
+        func `UDP payload size constants`() {
             #expect(RFC_6891.OPT.minimumUDPPayloadSize == 512)
             #expect(RFC_6891.OPT.defaultUDPPayloadSize == 4096)
             #expect(RFC_6891.OPT.maximumUDPPayloadSize == 65535)
