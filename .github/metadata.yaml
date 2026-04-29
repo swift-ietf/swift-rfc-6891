@@ -1,0 +1,9 @@
+# .github/metadata.yaml
+# Triaged by AI-assisted bulk pass (2026-04-29).
+description: "Swift implementation of RFC 6891: Extension Mechanisms for DNS (EDNS(0))."
+topics:
+  - standards
+  - rfc
+  - rfc-6891
+  - dns
+homepage: "https://swift-institute.org"
