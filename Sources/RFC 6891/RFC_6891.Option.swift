@@ -39,16 +39,25 @@ extension RFC_6891 {
         public let code: Code
 
         /// Option data
-        public let data: [UInt8]
+        public let data: [Byte]
 
         /// Creates an EDNS option
         ///
         /// - Parameters:
         ///   - code: The option code
         ///   - data: The option data
-        public init(code: Code, data: [UInt8]) {
+        public init(code: Code, data: [Byte]) {
             self.code = code
             self.data = data
+        }
+
+        /// Creates an EDNS option from stdlib `[UInt8]` data.
+        ///
+        /// Stdlib-interop forwarder; bridges via `[Byte](data)` BSLI.
+        @_disfavoredOverload
+        public init(code: Code, data: [UInt8]) {
+            self.code = code
+            self.data = Array<Byte>(data)
         }
     }
 }
@@ -121,14 +130,12 @@ extension RFC_6891.Option: Binary.Serializable {
     public static func serialize<Buffer: RangeReplaceableCollection>(
         _ option: Self,
         into buffer: inout Buffer
-    ) where Buffer.Element == UInt8 {
-        // Option Code (16 bits)
-        buffer.append(UInt8(option.code.rawValue >> 8))
-        buffer.append(UInt8(option.code.rawValue & 0xFF))
+    ) where Buffer.Element == Byte {
+        // Option Code (16 bits, network byte order)
+        buffer.append(contentsOf: option.code.rawValue.bytes(endianness: .big))
 
-        // Option Length (16 bits)
-        buffer.append(UInt8(option.data.count >> 8))
-        buffer.append(UInt8(option.data.count & 0xFF))
+        // Option Length (16 bits, network byte order)
+        buffer.append(contentsOf: UInt16(option.data.count).bytes(endianness: .big))
 
         // Option Data
         buffer.append(contentsOf: option.data)

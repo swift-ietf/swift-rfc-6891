@@ -75,10 +75,10 @@ struct RFC6891Tests {
         func `Create and serialize option`() {
             let option = RFC_6891.Option(
                 code: .nsid,
-                data: Array("test".utf8)
+                data: Array<Byte>("test".utf8)
             )
 
-            var buffer: [UInt8] = []
+            var buffer: [Byte] = []
             RFC_6891.Option.serialize(option, into: &buffer)
 
             // 2 bytes code + 2 bytes length + 4 bytes data
@@ -139,7 +139,7 @@ struct RFC6891Tests {
                 options: []
             )
 
-            var buffer: [UInt8] = []
+            var buffer: [Byte] = []
             RFC_6891.OPT.serialize(opt, into: &buffer)
 
             // NAME (1) + TYPE (2) + CLASS (2) + TTL (4) + RDLENGTH (2) = 11 bytes minimum
@@ -165,7 +165,7 @@ struct RFC6891Tests {
         func `Serialize OPT with DNSSEC flag`() {
             let opt = RFC_6891.OPT(dnssecOK: true)
 
-            var buffer: [UInt8] = []
+            var buffer: [Byte] = []
             RFC_6891.OPT.serialize(opt, into: &buffer)
 
             // TTL byte 2 should have DO bit set (0x80)
@@ -180,7 +180,7 @@ struct RFC6891Tests {
                 ]
             )
 
-            var buffer: [UInt8] = []
+            var buffer: [Byte] = []
             RFC_6891.OPT.serialize(opt, into: &buffer)
 
             // RDLENGTH should be 7 (2 code + 2 length + 3 data)

@@ -111,7 +111,7 @@ extension RFC_6891.OPT: Binary.Serializable {
     public static func serialize<Buffer: RangeReplaceableCollection>(
         _ opt: Self,
         into buffer: inout Buffer
-    ) where Buffer.Element == UInt8 {
+    ) where Buffer.Element == Byte {
         // NAME = 0 (root domain)
         buffer.append(0)
 
@@ -119,30 +119,30 @@ extension RFC_6891.OPT: Binary.Serializable {
         buffer.append(0)
         buffer.append(41)
 
-        // CLASS = UDP payload size
-        buffer.append(UInt8(opt.udpPayloadSize >> 8))
-        buffer.append(UInt8(opt.udpPayloadSize & 0xFF))
+        // CLASS = UDP payload size (network byte order)
+        buffer.append(contentsOf: opt.udpPayloadSize.bytes(endianness: .big))
 
         // TTL = extended RCODE (8) | version (8) | DO (1) | Z (15)
-        buffer.append(opt.extendedRcode.rawValue)
-        buffer.append(opt.version.rawValue)
+        // ExtendedRcode/Version rawValue: UInt8 stays UInt8 per [API-BYTE-004]
+        // (ExtendedRcode rawValue participates in UInt16 arithmetic in
+        // fullRcode helper); bridge via Byte(...) at conformance boundary.
+        buffer.append(Byte(opt.extendedRcode.rawValue))
+        buffer.append(Byte(opt.version.rawValue))
 
         var flags: UInt16 = 0
         if opt.dnssecOK {
             flags |= 0x8000 // DO bit is the high bit
         }
-        buffer.append(UInt8(flags >> 8))
-        buffer.append(UInt8(flags & 0xFF))
+        buffer.append(contentsOf: flags.bytes(endianness: .big))
 
         // Serialize options to compute RDLENGTH
-        var optionData: [UInt8] = []
+        var optionData: [Byte] = []
         for option in opt.options {
             RFC_6891.Option.serialize(option, into: &optionData)
         }
 
-        // RDLENGTH
-        buffer.append(UInt8(optionData.count >> 8))
-        buffer.append(UInt8(optionData.count & 0xFF))
+        // RDLENGTH (network byte order)
+        buffer.append(contentsOf: UInt16(optionData.count).bytes(endianness: .big))
 
         // RDATA (options)
         buffer.append(contentsOf: optionData)
