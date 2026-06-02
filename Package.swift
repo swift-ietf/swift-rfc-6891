@@ -26,9 +26,9 @@ let package = Package(
         .library(name: "RFC 6891", targets: ["RFC 6891"])
     ],
     dependencies: [
-        .package(path: "../swift-rfc-1035"),
-        .package(path: "../../swift-primitives/swift-standard-library-extensions"),
-        .package(path: "../../swift-primitives/swift-ascii-primitives")
+        .package(url: "https://github.com/swift-ietf/swift-rfc-1035.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-standard-library-extensions.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-ascii-primitives.git", branch: "main")
     ],
     targets: [
         .target(
