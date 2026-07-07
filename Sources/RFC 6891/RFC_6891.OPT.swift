@@ -15,6 +15,8 @@
 //
 // RFC 6891 Section 6.1: OPT Record Definition
 
+public import Binary_Serializable_Primitives
+
 extension RFC_6891 {
     /// OPT Pseudo-Resource Record
     ///
@@ -131,7 +133,7 @@ extension RFC_6891.OPT: Binary.Serializable {
 
         var flags: UInt16 = 0
         if opt.dnssecOK {
-            flags |= 0x8000 // DO bit is the high bit
+            flags |= 0x8000  // DO bit is the high bit
         }
         buffer.append(contentsOf: flags.bytes(endianness: .big))
 

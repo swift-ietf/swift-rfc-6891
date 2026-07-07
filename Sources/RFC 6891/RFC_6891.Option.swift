@@ -15,6 +15,8 @@
 //
 // RFC 6891 Section 6.1.2: OPT RDATA (Options)
 
+public import Binary_Serializable_Primitives
+
 extension RFC_6891 {
     /// EDNS Option
     ///
@@ -57,7 +59,7 @@ extension RFC_6891 {
         @_disfavoredOverload
         public init(code: Code, data: [UInt8]) {
             self.code = code
-            self.data = Array<Byte>(data)
+            self.data = [Byte](data)
         }
     }
 }

@@ -22,6 +22,7 @@
 /// RFC 6891: Extension Mechanisms for DNS (EDNS(0))
 ///
 /// This namespace contains types for EDNS as defined in RFC 6891 from April 2013.
+///
 /// EDNS(0) extends the DNS protocol to support larger messages and additional
 /// capabilities.
 ///

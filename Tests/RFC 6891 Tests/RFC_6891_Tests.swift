@@ -50,7 +50,7 @@ struct RFC6891Tests {
         func `Full RCODE calculation`() {
             let extended = RFC_6891.ExtendedRcode(rawValue: 1)
             let full = extended.fullRcode(headerRcode: 0)
-            #expect(full == 16) // BADVERS
+            #expect(full == 16)  // BADVERS
         }
 
         @Test
@@ -75,7 +75,7 @@ struct RFC6891Tests {
         func `Create and serialize option`() {
             let option = RFC_6891.Option(
                 code: .nsid,
-                data: Array<Byte>("test".utf8)
+                data: [Byte]("test".utf8)
             )
 
             var buffer: [Byte] = []
