@@ -1,35 +1,11 @@
 # swift-rfc-6891
 
-![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
+Use this package when you build DNS messages yourself and need to add the EDNS(0) OPT record, to advertise a larger UDP payload size, set the DNSSEC OK bit or send EDNS options. Start from `RFC_6891.OPT`. The package only writes OPT records. It does not read them back from a response. If you want to resolve names rather than build messages, use swift-domain-name-system.
 
-The EDNS(0) OPT pseudo-record and DNS message extensions of RFC 6891.
+## Laws
 
-## Standard Reference
-
-- **RFC**: 6891
-- **Title**: Extension Mechanisms for DNS (EDNS(0))
-
-## Installation
-
-Add the package to your `Package.swift` dependencies:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/swift-ietf/swift-rfc-6891.git", from: "0.0.1")
-]
-```
-
-Add the product to a target that needs it:
-
-```swift
-.target(
-    name: "YourTarget",
-    dependencies: [
-        .product(name: "RFC 6891", package: "swift-rfc-6891")
-    ]
-)
-```
-
-## License
-
-Apache 2.0. See [LICENSE.md](LICENSE.md).
+- An OPT record is written as the whole pseudo-record: a root name (one zero byte), type 41, the UDP payload size in the class field, then the TTL field, the data length and the options. Every multi-byte field is big-endian.
+- The TTL field holds the extended RCODE byte, the version byte, then 16 flag bits in which only the DNSSEC OK bit, the highest one, can be set.
+- The data length is computed from the options. Options are written in the order given, each as its code, the length of its data and the data.
+- The payload size is written as given. It is not raised to the 512-byte minimum.
+- `RFC_6891.ExtendedRcode.fullRcode(headerRcode:)` shifts the extended RCODE left by four bits and adds the low four bits of the header RCODE, ignoring the header value's upper bits.
