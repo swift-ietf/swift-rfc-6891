@@ -13,5 +13,5 @@
 // exports.swift
 // swift-rfc-6891
 
-@_exported public import ASCII_Primitives
+@_exported public import ASCII
 @_exported public import RFC_1035

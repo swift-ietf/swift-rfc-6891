@@ -75,7 +75,7 @@ struct RFC6891Tests {
         func `Create and serialize option`() {
             let option = RFC_6891.Option(
                 code: .nsid,
-                data: [Byte]("test".utf8)
+                data: [Byte](utf8: "test")
             )
 
             var buffer: [Byte] = []
@@ -84,11 +84,11 @@ struct RFC6891Tests {
             // 2 bytes code + 2 bytes length + 4 bytes data
             #expect(buffer.count == 8)
             // Code = 3 (NSID)
-            #expect(buffer[0] == 0)
-            #expect(buffer[1] == 3)
+            #expect(buffer[0] == Byte(0))
+            #expect(buffer[1] == Byte(3))
             // Length = 4
-            #expect(buffer[2] == 0)
-            #expect(buffer[3] == 4)
+            #expect(buffer[2] == Byte(0))
+            #expect(buffer[3] == Byte(4))
         }
     }
 
@@ -146,19 +146,19 @@ struct RFC6891Tests {
             #expect(buffer.count == 11)
 
             // NAME = 0 (root)
-            #expect(buffer[0] == 0)
+            #expect(buffer[0] == Byte(0))
 
             // TYPE = 41
-            #expect(buffer[1] == 0)
-            #expect(buffer[2] == 41)
+            #expect(buffer[1] == Byte(0))
+            #expect(buffer[2] == Byte(41))
 
             // CLASS = 4096 = 0x1000
-            #expect(buffer[3] == 0x10)
-            #expect(buffer[4] == 0x00)
+            #expect(buffer[3] == Byte(0x10))
+            #expect(buffer[4] == Byte(0x00))
 
             // RDLENGTH = 0 (no options)
-            #expect(buffer[9] == 0)
-            #expect(buffer[10] == 0)
+            #expect(buffer[9] == Byte(0))
+            #expect(buffer[10] == Byte(0))
         }
 
         @Test
@@ -169,7 +169,7 @@ struct RFC6891Tests {
             RFC_6891.OPT.serialize(opt, into: &buffer)
 
             // TTL byte 2 should have DO bit set (0x80)
-            #expect(buffer[7] == 0x80)
+            #expect(buffer[7] == Byte(0x80))
         }
 
         @Test
@@ -184,8 +184,8 @@ struct RFC6891Tests {
             RFC_6891.OPT.serialize(opt, into: &buffer)
 
             // RDLENGTH should be 7 (2 code + 2 length + 3 data)
-            #expect(buffer[9] == 0)
-            #expect(buffer[10] == 7)
+            #expect(buffer[9] == Byte(0))
+            #expect(buffer[10] == Byte(7))
 
             // Total = 11 + 7 = 18 bytes
             #expect(buffer.count == 18)

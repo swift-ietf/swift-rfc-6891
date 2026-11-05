@@ -15,7 +15,7 @@
 //
 // RFC 6891 Section 6.1.2: OPT RDATA (Options)
 
-public import Binary_Serializable_Primitives
+public import Binary
 
 extension RFC_6891 {
     /// EDNS Option
@@ -55,11 +55,11 @@ extension RFC_6891 {
 
         /// Creates an EDNS option from stdlib `[UInt8]` data.
         ///
-        /// Stdlib-interop forwarder; bridges via `[Byte](data)` BSLI.
+        /// Stdlib-interop forwarder; each element is taken by bit pattern.
         @_disfavoredOverload
         public init(code: Code, data: [UInt8]) {
             self.code = code
-            self.data = [Byte](data)
+            self.data = data.map(Byte.init(bitPattern:))
         }
     }
 }

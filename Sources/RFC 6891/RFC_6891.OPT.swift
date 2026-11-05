@@ -15,7 +15,7 @@
 //
 // RFC 6891 Section 6.1: OPT Record Definition
 
-public import Binary_Serializable_Primitives
+public import Binary
 
 extension RFC_6891 {
     /// OPT Pseudo-Resource Record
@@ -115,11 +115,11 @@ extension RFC_6891.OPT: Binary.Serializable {
         into buffer: inout Buffer
     ) where Buffer.Element == Byte {
         // NAME = 0 (root domain)
-        buffer.append(0)
+        buffer.append(Byte(0))
 
         // TYPE = 41 (OPT)
-        buffer.append(0)
-        buffer.append(41)
+        buffer.append(Byte(0))
+        buffer.append(Byte(41))
 
         // CLASS = UDP payload size (network byte order)
         buffer.append(contentsOf: opt.udpPayloadSize.bytes(endianness: .big))
