@@ -13,9 +13,15 @@
 import Testing
 @testable import RFC_6891
 
-@Suite
-struct `RFC 6891 EDNS Tests` {
+enum `RFC_6891 Tests` {}
 
+extension `RFC_6891 Tests` {
+    @Suite
+    struct `RFC 6891 EDNS Tests` {
+    }
+}
+
+extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
     @Suite
     struct `Constants Tests` {
         @Test
