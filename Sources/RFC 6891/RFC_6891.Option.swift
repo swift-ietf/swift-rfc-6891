@@ -1,20 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// Copyright (c) 2025 Coen ten Thije Boonkkamp
-// Licensed under Apache License v2.0
-//
-// See LICENSE.txt for license information
-// See CONTRIBUTORS.txt for the list of project contributors
-//
-// SPDX-License-Identifier: Apache-2.0
-//
-// ===----------------------------------------------------------------------===//
-
-// RFC_6891.Option.swift
-// swift-rfc-6891
-//
-// RFC 6891 Section 6.1.2: OPT RDATA (Options)
-
 public import Binary
 
 extension RFC_6891 {
@@ -63,8 +46,6 @@ extension RFC_6891 {
         }
     }
 }
-
-// MARK: - Option Code
 
 extension RFC_6891.Option {
     /// EDNS Option Code
@@ -126,20 +107,15 @@ extension RFC_6891.Option {
     }
 }
 
-// MARK: - Binary.Serializable
-
 extension RFC_6891.Option: Binary.Serializable {
     public static func serialize<Buffer: RangeReplaceableCollection>(
         _ option: Self,
         into buffer: inout Buffer
     ) where Buffer.Element == Byte {
-        // Option Code (16 bits, network byte order)
         buffer.append(contentsOf: option.code.rawValue.bytes(endianness: .big))
 
-        // Option Length (16 bits, network byte order)
         buffer.append(contentsOf: UInt16(option.data.count).bytes(endianness: .big))
 
-        // Option Data
         buffer.append(contentsOf: option.data)
     }
 }

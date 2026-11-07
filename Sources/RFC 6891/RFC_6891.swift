@@ -1,24 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// Copyright (c) 2025 Coen ten Thije Boonkkamp
-// Licensed under Apache License v2.0
-//
-// See LICENSE.txt for license information
-// See CONTRIBUTORS.txt for the list of project contributors
-//
-// SPDX-License-Identifier: Apache-2.0
-//
-// ===----------------------------------------------------------------------===//
-
-// RFC_6891.swift
-// swift-rfc-6891
-//
-// RFC 6891: Extension Mechanisms for DNS (EDNS(0)) (April 2013)
-// https://www.rfc-editor.org/rfc/rfc6891.html
-//
-// This package implements EDNS as defined by RFC 6891.
-// EDNS extends DNS with additional capabilities via the OPT pseudo-RR.
-
 /// RFC 6891: Extension Mechanisms for DNS (EDNS(0))
 ///
 /// This namespace contains types for EDNS as defined in RFC 6891 from April 2013.

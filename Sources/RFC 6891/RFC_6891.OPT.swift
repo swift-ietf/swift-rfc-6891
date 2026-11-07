@@ -1,20 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// Copyright (c) 2025 Coen ten Thije Boonkkamp
-// Licensed under Apache License v2.0
-//
-// See LICENSE.txt for license information
-// See CONTRIBUTORS.txt for the list of project contributors
-//
-// SPDX-License-Identifier: Apache-2.0
-//
-// ===----------------------------------------------------------------------===//
-
-// RFC_6891.OPT.swift
-// swift-rfc-6891
-//
-// RFC 6891 Section 6.1: OPT Record Definition
-
 public import Binary
 
 extension RFC_6891 {
@@ -85,8 +68,6 @@ extension RFC_6891 {
     }
 }
 
-// MARK: - Constants
-
 extension RFC_6891.OPT {
     /// Minimum recommended UDP payload size (512 bytes)
     public static let minimumUDPPayloadSize: UInt16 = 512
@@ -97,8 +78,6 @@ extension RFC_6891.OPT {
     /// Maximum UDP payload size
     public static let maximumUDPPayloadSize: UInt16 = 65535
 }
-
-// MARK: - Binary.Serializable
 
 extension RFC_6891.OPT: Binary.Serializable {
     /// Serializes the OPT record to wire format
@@ -114,44 +93,32 @@ extension RFC_6891.OPT: Binary.Serializable {
         _ opt: Self,
         into buffer: inout Buffer
     ) where Buffer.Element == Byte {
-        // NAME = 0 (root domain)
         buffer.append(Byte(0))
 
-        // TYPE = 41 (OPT)
         buffer.append(Byte(0))
         buffer.append(Byte(41))
 
-        // CLASS = UDP payload size (network byte order)
         buffer.append(contentsOf: opt.udpPayloadSize.bytes(endianness: .big))
 
-        // TTL = extended RCODE (8) | version (8) | DO (1) | Z (15)
-        // ExtendedRcode/Version rawValue: UInt8 stays UInt8 per [API-BYTE-004]
-        // (ExtendedRcode rawValue participates in UInt16 arithmetic in
-        // fullRcode helper); bridge via Byte(...) at conformance boundary.
         buffer.append(Byte(opt.extendedRcode.rawValue))
         buffer.append(Byte(opt.version.rawValue))
 
         var flags: UInt16 = 0
         if opt.dnssecOK {
-            flags |= 0x8000  // DO bit is the high bit
+            flags |= 0x8000
         }
         buffer.append(contentsOf: flags.bytes(endianness: .big))
 
-        // Serialize options to compute RDLENGTH
         var optionData: [Byte] = []
         for option in opt.options {
             RFC_6891.Option.serialize(option, into: &optionData)
         }
 
-        // RDLENGTH (network byte order)
         buffer.append(contentsOf: UInt16(optionData.count).bytes(endianness: .big))
 
-        // RDATA (options)
         buffer.append(contentsOf: optionData)
     }
 }
-
-// MARK: - Convenience Initializers
 
 extension RFC_6891.OPT {
     /// Creates a default EDNS(0) OPT record

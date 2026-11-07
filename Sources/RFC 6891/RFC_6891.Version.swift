@@ -1,20 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// Copyright (c) 2025 Coen ten Thije Boonkkamp
-// Licensed under Apache License v2.0
-//
-// See LICENSE.txt for license information
-// See CONTRIBUTORS.txt for the list of project contributors
-//
-// SPDX-License-Identifier: Apache-2.0
-//
-// ===----------------------------------------------------------------------===//
-
-// RFC_6891.Version.swift
-// swift-rfc-6891
-//
-// RFC 6891 Section 6.1.3: OPT Record TTL Field Use
-
 extension RFC_6891 {
     /// EDNS Version
     ///
