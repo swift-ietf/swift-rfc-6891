@@ -13,19 +13,19 @@
 import Testing
 @testable import RFC_6891
 
-@Suite("RFC 6891 EDNS Tests")
-struct RFC6891Tests {
+@Suite
+struct `RFC 6891 EDNS Tests` {
 
-    @Suite("Constants Tests")
-    struct ConstantsTests {
+    @Suite
+    struct `Constants Tests` {
         @Test
         func `OPT type is 41`() {
             #expect(RFC_6891.optType == 41)
         }
     }
 
-    @Suite("Version Tests")
-    struct VersionTests {
+    @Suite
+    struct `Version Tests` {
         @Test
         func `Version zero`() {
             #expect(RFC_6891.Version.zero.rawValue == 0)
@@ -39,8 +39,8 @@ struct RFC6891Tests {
         }
     }
 
-    @Suite("ExtendedRcode Tests")
-    struct ExtendedRcodeTests {
+    @Suite
+    struct `ExtendedRcode Tests` {
         @Test
         func `Zero extended RCODE`() {
             #expect(RFC_6891.ExtendedRcode.zero.rawValue == 0)
@@ -61,8 +61,8 @@ struct RFC6891Tests {
         }
     }
 
-    @Suite("Option Tests")
-    struct OptionTests {
+    @Suite
+    struct `Option Tests` {
         @Test
         func `Option code values`() {
             #expect(RFC_6891.Option.Code.nsid.rawValue == 3)
@@ -92,8 +92,8 @@ struct RFC6891Tests {
         }
     }
 
-    @Suite("OPT Record Tests")
-    struct OPTRecordTests {
+    @Suite
+    struct `OPT Record Tests` {
         @Test
         func `Default OPT record`() {
             let opt = RFC_6891.OPT.default
