@@ -1,4 +1,4 @@
-public import Binary
+import Binary
 
 
 extension RFC_6891.Option {
