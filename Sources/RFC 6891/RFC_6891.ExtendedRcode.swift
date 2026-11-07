@@ -25,17 +25,19 @@ extension RFC_6891 {
         init(__unchecked: Void, rawValue: UInt8) {
             self.rawValue = rawValue
         }
+    }
+}
 
-        /// No extended RCODE (use header RCODE only)
-        public static let zero = Self(__unchecked: (), rawValue: 0)
+extension RFC_6891.ExtendedRcode {
+    /// No extended RCODE (use header RCODE only)
+    public static let zero = Self(__unchecked: (), rawValue: 0)
 
-        /// Computes the full 12-bit RCODE
-        ///
-        /// - Parameter headerRcode: The 4-bit RCODE from the DNS header
-        /// - Returns: The combined 12-bit RCODE
-        public func fullRcode(headerRcode: UInt8) -> UInt16 {
-            (UInt16(rawValue) << 4) | UInt16(headerRcode & 0x0F)
-        }
+    /// Computes the full 12-bit RCODE
+    ///
+    /// - Parameter headerRcode: The 4-bit RCODE from the DNS header
+    /// - Returns: The combined 12-bit RCODE
+    public func fullRcode(headerRcode: UInt8) -> UInt16 {
+        (UInt16(rawValue) << 4) | UInt16(headerRcode & 0x0F)
     }
 }
 

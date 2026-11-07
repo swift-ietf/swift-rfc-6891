@@ -21,12 +21,14 @@ extension RFC_6891 {
         init(__unchecked: Void, rawValue: UInt8) {
             self.rawValue = rawValue
         }
+    }
+}
 
-        /// EDNS version 0 (current version)
-        public static let zero = Self(__unchecked: (), rawValue: 0)
+extension RFC_6891.Version {
+    /// EDNS version 0 (current version)
+    public static let zero = Self(__unchecked: (), rawValue: 0)
 
-        public static func < (lhs: Self, rhs: Self) -> Bool {
-            lhs.rawValue < rhs.rawValue
-        }
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.rawValue < rhs.rawValue
     }
 }
