@@ -62,48 +62,6 @@ extension RFC_6891.Option {
         init(__unchecked: Void, rawValue: UInt16) {
             self.rawValue = rawValue
         }
-
-        /// LLQ (1): Long-Lived Queries (RFC 8764)
-        public static let llq = Self(__unchecked: (), rawValue: 1)
-
-        /// UL (2): Update Lease (draft)
-        public static let updateLease = Self(__unchecked: (), rawValue: 2)
-
-        /// NSID (3): Name Server Identifier (RFC 5001)
-        public static let nsid = Self(__unchecked: (), rawValue: 3)
-
-        /// DAU (5): DNSSEC Algorithm Understood (RFC 6975)
-        public static let dau = Self(__unchecked: (), rawValue: 5)
-
-        /// DHU (6): DS Hash Understood (RFC 6975)
-        public static let dhu = Self(__unchecked: (), rawValue: 6)
-
-        /// N3U (7): NSEC3 Hash Understood (RFC 6975)
-        public static let n3u = Self(__unchecked: (), rawValue: 7)
-
-        /// ECS (8): Client Subnet (RFC 7871)
-        public static let clientSubnet = Self(__unchecked: (), rawValue: 8)
-
-        /// EXPIRE (9): Expire (RFC 7314)
-        public static let expire = Self(__unchecked: (), rawValue: 9)
-
-        /// COOKIE (10): DNS Cookie (RFC 7873)
-        public static let cookie = Self(__unchecked: (), rawValue: 10)
-
-        /// TCP-KEEPALIVE (11): TCP Keepalive (RFC 7828)
-        public static let tcpKeepalive = Self(__unchecked: (), rawValue: 11)
-
-        /// PADDING (12): Padding (RFC 7830)
-        public static let padding = Self(__unchecked: (), rawValue: 12)
-
-        /// CHAIN (13): Chain Query (RFC 7901)
-        public static let chain = Self(__unchecked: (), rawValue: 13)
-
-        /// KEY-TAG (14): Key Tag (RFC 8145)
-        public static let keyTag = Self(__unchecked: (), rawValue: 14)
-
-        /// EXTENDED-ERROR (15): Extended DNS Error (RFC 8914)
-        public static let extendedError = Self(__unchecked: (), rawValue: 15)
     }
 }
 
@@ -118,4 +76,49 @@ extension RFC_6891.Option: Binary.Serializable {
 
         buffer.append(contentsOf: option.data)
     }
+}
+
+extension RFC_6891.Option.Code {
+
+    /// LLQ (1): Long-Lived Queries (RFC 8764)
+    public static let llq = Self(__unchecked: (), rawValue: 1)
+
+    /// UL (2): Update Lease (draft)
+    public static let updateLease = Self(__unchecked: (), rawValue: 2)
+
+    /// NSID (3): Name Server Identifier (RFC 5001)
+    public static let nsid = Self(__unchecked: (), rawValue: 3)
+
+    /// DAU (5): DNSSEC Algorithm Understood (RFC 6975)
+    public static let dau = Self(__unchecked: (), rawValue: 5)
+
+    /// DHU (6): DS Hash Understood (RFC 6975)
+    public static let dhu = Self(__unchecked: (), rawValue: 6)
+
+    /// N3U (7): NSEC3 Hash Understood (RFC 6975)
+    public static let n3u = Self(__unchecked: (), rawValue: 7)
+
+    /// ECS (8): Client Subnet (RFC 7871)
+    public static let clientSubnet = Self(__unchecked: (), rawValue: 8)
+
+    /// EXPIRE (9): Expire (RFC 7314)
+    public static let expire = Self(__unchecked: (), rawValue: 9)
+
+    /// COOKIE (10): DNS Cookie (RFC 7873)
+    public static let cookie = Self(__unchecked: (), rawValue: 10)
+
+    /// TCP-KEEPALIVE (11): TCP Keepalive (RFC 7828)
+    public static let tcpKeepalive = Self(__unchecked: (), rawValue: 11)
+
+    /// PADDING (12): Padding (RFC 7830)
+    public static let padding = Self(__unchecked: (), rawValue: 12)
+
+    /// CHAIN (13): Chain Query (RFC 7901)
+    public static let chain = Self(__unchecked: (), rawValue: 13)
+
+    /// KEY-TAG (14): Key Tag (RFC 8145)
+    public static let keyTag = Self(__unchecked: (), rawValue: 14)
+
+    /// EXTENDED-ERROR (15): Extended DNS Error (RFC 8914)
+    public static let extendedError = Self(__unchecked: (), rawValue: 15)
 }
