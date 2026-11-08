@@ -1,4 +1,3 @@
-
 extension RFC_6891 {
     /// Extended RCODE values (12-bit)
     ///

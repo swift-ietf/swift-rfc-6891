@@ -1,6 +1,5 @@
 import Binary
 
-
 extension RFC_6891.Option {
     /// EDNS Option Code
     ///
