@@ -51,28 +51,6 @@ extension RFC_6891 {
         /// EDNS options
         public let options: [Option]
 
-        /// Creates an OPT record
-        public init(
-            udpPayloadSize: UInt16 = 4096,
-            extendedRcode: ExtendedRcode = .zero,
-            version: Version = .zero,
-            dnssecOK: Bool = false,
-            options: [Option] = []
-        ) throws(Error) {
-            let length = options.reduce(0) { $0 + 4 + $1.data.count }
-            guard length <= Self.maximumOptionsLength else {
-                throw .optionsTooLong(length)
-            }
-            self.init(
-                __unchecked: (),
-                udpPayloadSize: udpPayloadSize,
-                extendedRcode: extendedRcode,
-                version: version,
-                dnssecOK: dnssecOK,
-                options: options
-            )
-        }
-
         init(
             __unchecked _: Void,
             udpPayloadSize: UInt16,
@@ -87,6 +65,30 @@ extension RFC_6891 {
             self.dnssecOK = dnssecOK
             self.options = options
         }
+    }
+}
+
+extension RFC_6891.OPT {
+    /// Creates an OPT record
+    public init(
+        udpPayloadSize: UInt16 = 4096,
+        extendedRcode: RFC_6891.ExtendedRcode = .zero,
+        version: RFC_6891.Version = .zero,
+        dnssecOK: Bool = false,
+        options: [RFC_6891.Option] = []
+    ) throws(Error) {
+        let length = options.reduce(0) { $0 + 4 + $1.data.count }
+        guard length <= Self.maximumOptionsLength else {
+            throw .optionsTooLong(length)
+        }
+        self.init(
+            __unchecked: (),
+            udpPayloadSize: udpPayloadSize,
+            extendedRcode: extendedRcode,
+            version: version,
+            dnssecOK: dnssecOK,
+            options: options
+        )
     }
 }
 

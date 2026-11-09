@@ -26,30 +26,35 @@ extension RFC_6891 {
         /// Option data
         public let data: [Byte]
 
-        /// Creates an EDNS option
-        ///
-        /// - Parameters:
-        ///   - code: The option code
-        ///   - data: The option data
-        public init(code: Code, data: [Byte]) throws(Error) {
-            guard data.count <= Self.maximumDataLength else {
-                throw .dataTooLong(data.count)
-            }
-            self.init(__unchecked: (), code: code, data: data)
-        }
-
         init(__unchecked _: Void, code: Code, data: [Byte]) {
             self.code = code
             self.data = data
         }
+    }
+}
 
-        /// Creates an EDNS option from stdlib `[UInt8]` data.
-        ///
-        /// Stdlib-interop forwarder; each element is taken by bit pattern.
-        @_disfavoredOverload
-        public init(code: Code, data: [UInt8]) throws(Error) {
-            try self.init(code: code, data: data.map(Byte.init(bitPattern:)))
+extension RFC_6891.Option {
+    /// Creates an EDNS option
+    ///
+    /// - Parameters:
+    ///   - code: The option code
+    ///   - data: The option data
+    public init(code: Code, data: [Byte]) throws(Error) {
+        guard data.count <= Self.maximumDataLength else {
+            throw .dataTooLong(data.count)
         }
+        self.init(__unchecked: (), code: code, data: data)
+    }
+
+    /// Creates an EDNS option from stdlib `[UInt8]` data.
+    ///
+    /// Stdlib-interop forwarder; each element is taken by bit pattern.
+    @_disfavoredOverload
+    public init(code: Code, data: [UInt8]) throws(Error) {
+        guard data.count <= Self.maximumDataLength else {
+            throw .dataTooLong(data.count)
+        }
+        self.init(__unchecked: (), code: code, data: data.map(Byte.init(bitPattern:)))
     }
 }
 
