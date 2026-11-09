@@ -31,7 +31,14 @@ extension RFC_6891 {
         /// - Parameters:
         ///   - code: The option code
         ///   - data: The option data
-        public init(code: Code, data: [Byte]) {
+        public init(code: Code, data: [Byte]) throws(Error) {
+            guard data.count <= Self.maximumDataLength else {
+                throw .dataTooLong(data.count)
+            }
+            self.init(__unchecked: (), code: code, data: data)
+        }
+
+        init(__unchecked _: Void, code: Code, data: [Byte]) {
             self.code = code
             self.data = data
         }
@@ -40,14 +47,14 @@ extension RFC_6891 {
         ///
         /// Stdlib-interop forwarder; each element is taken by bit pattern.
         @_disfavoredOverload
-        public init(code: Code, data: [UInt8]) {
-            self.code = code
-            self.data = data.map(Byte.init(bitPattern:))
+        public init(code: Code, data: [UInt8]) throws(Error) {
+            try self.init(code: code, data: data.map(Byte.init(bitPattern:)))
         }
     }
 }
 
 extension RFC_6891.Option {
+    public static let maximumDataLength = Int(UInt16.max)
 }
 
 extension RFC_6891.Option: Binary.Serializable {

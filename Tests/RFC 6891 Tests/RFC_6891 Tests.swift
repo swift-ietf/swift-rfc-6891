@@ -78,8 +78,8 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
         }
 
         @Test
-        func `Create and serialize option`() {
-            let option = RFC_6891.Option(
+        func `Create and serialize option`() throws {
+            let option = try RFC_6891.Option(
                 code: .nsid,
                 data: [Byte](utf8: "test")
             )
@@ -95,6 +95,24 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
             // Length = 4
             #expect(buffer[2] == Byte(0))
             #expect(buffer[3] == Byte(4))
+        }
+
+        @Test
+        func `Option data at the 16-bit length limit is accepted`() throws {
+            let option = try RFC_6891.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65535))
+
+            var buffer: [Byte] = []
+            RFC_6891.Option.serialize(option, into: &buffer)
+
+            #expect(buffer[2] == Byte(0xFF))
+            #expect(buffer[3] == Byte(0xFF))
+        }
+
+        @Test
+        func `Option data beyond the 16-bit length limit is refused`() {
+            #expect(throws: RFC_6891.Option.Error.dataTooLong(65536)) {
+                try RFC_6891.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65536))
+            }
         }
     }
 
@@ -119,14 +137,14 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
         }
 
         @Test
-        func `Custom OPT record`() {
-            let opt = RFC_6891.OPT(
+        func `Custom OPT record`() throws {
+            let opt = try RFC_6891.OPT(
                 udpPayloadSize: 1232,
                 extendedRcode: .zero,
                 version: .zero,
                 dnssecOK: true,
                 options: [
-                    RFC_6891.Option(code: .padding, data: Array(repeating: 0, count: 10))
+                    try RFC_6891.Option(code: .padding, data: Array(repeating: 0, count: 10))
                 ]
             )
 
@@ -136,8 +154,8 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
         }
 
         @Test
-        func `Serialize OPT record`() {
-            let opt = RFC_6891.OPT(
+        func `Serialize OPT record`() throws {
+            let opt = try RFC_6891.OPT(
                 udpPayloadSize: 4096,
                 extendedRcode: .zero,
                 version: .zero,
@@ -168,8 +186,8 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
         }
 
         @Test
-        func `Serialize OPT with DNSSEC flag`() {
-            let opt = RFC_6891.OPT(dnssecOK: true)
+        func `Serialize OPT with DNSSEC flag`() throws {
+            let opt = try RFC_6891.OPT(dnssecOK: true)
 
             var buffer: [Byte] = []
             RFC_6891.OPT.serialize(opt, into: &buffer)
@@ -179,10 +197,10 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
         }
 
         @Test
-        func `Serialize OPT with options`() {
-            let opt = RFC_6891.OPT(
+        func `Serialize OPT with options`() throws {
+            let opt = try RFC_6891.OPT(
                 options: [
-                    RFC_6891.Option(code: .nsid, data: [0x01, 0x02, 0x03])
+                    try RFC_6891.Option(code: .nsid, data: [0x01, 0x02, 0x03])
                 ]
             )
 
@@ -195,6 +213,16 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
             // Total = 11 + 7 = 18 bytes
             #expect(buffer.count == 18)
+        }
+
+        @Test
+        func `Options whose RDATA exceeds the 16-bit length limit are refused`() throws {
+            let option = try RFC_6891.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65531))
+
+            #expect(throws: RFC_6891.OPT.Error.optionsTooLong(65539)) {
+                try RFC_6891.OPT(options: [option, try RFC_6891.Option(code: .padding, data: [])])
+            }
+            #expect(try RFC_6891.OPT(options: [option]).options.count == 1)
         }
 
         @Test

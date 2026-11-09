@@ -33,7 +33,7 @@
 ///
 /// ```swift
 /// // Create an OPT record advertising 4096-byte UDP support
-/// let opt = RFC_6891.OPT(
+/// let opt = try RFC_6891.OPT(
 ///     udpPayloadSize: 4096,
 ///     extendedRcode: 0,
 ///     version: .zero,
