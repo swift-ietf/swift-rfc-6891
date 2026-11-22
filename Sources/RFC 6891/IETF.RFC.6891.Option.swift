@@ -1,6 +1,6 @@
 public import Binary
 
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
     /// EDNS Option
     ///
     /// Options are carried in the RDATA portion of the OPT record.
@@ -33,7 +33,7 @@ extension RFC_6891 {
     }
 }
 
-extension RFC_6891.Option {
+extension IETF.RFC.`6891`.Option {
     /// Creates an EDNS option
     ///
     /// - Parameters:
@@ -58,11 +58,11 @@ extension RFC_6891.Option {
     }
 }
 
-extension RFC_6891.Option {
+extension IETF.RFC.`6891`.Option {
     public static let maximumDataLength = Int(UInt16.max)
 }
 
-extension RFC_6891.Option: Binary.Serializable {
+extension IETF.RFC.`6891`.Option: Binary.Serializable {
     public static func serialize<Buffer: RangeReplaceableCollection>(
         _ option: Self,
         into buffer: inout Buffer
@@ -75,7 +75,7 @@ extension RFC_6891.Option: Binary.Serializable {
     }
 }
 
-extension RFC_6891.Option.Code {
+extension IETF.RFC.`6891`.Option.Code {
 
     /// LLQ (1): Long-Lived Queries (RFC 8764)
     public static let llq = Self(__unchecked: (), rawValue: 1)

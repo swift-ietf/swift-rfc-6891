@@ -13,20 +13,20 @@
 import Testing
 @testable import RFC_6891
 
-enum `RFC_6891 Tests` {}
+enum `IETF.RFC.6891 Tests` {}
 
-extension `RFC_6891 Tests` {
+extension `IETF.RFC.6891 Tests` {
     @Suite
     struct `RFC 6891 EDNS Tests` {
     }
 }
 
-extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
+extension `IETF.RFC.6891 Tests`.`RFC 6891 EDNS Tests` {
     @Suite
     struct `Constants Tests` {
         @Test
         func `OPT type is 41`() {
-            #expect(RFC_6891.optType == 41)
+            #expect(IETF.RFC.`6891`.optType == 41)
         }
     }
 
@@ -34,13 +34,13 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
     struct `Version Tests` {
         @Test
         func `Version zero`() {
-            #expect(RFC_6891.Version.zero.rawValue == 0)
+            #expect(IETF.RFC.`6891`.Version.zero.rawValue == 0)
         }
 
         @Test
         func `Version is comparable`() {
-            let v0 = RFC_6891.Version.zero
-            let v1 = RFC_6891.Version(rawValue: 1)
+            let v0 = IETF.RFC.`6891`.Version.zero
+            let v1 = IETF.RFC.`6891`.Version(rawValue: 1)
             #expect(v0 < v1)
         }
     }
@@ -49,21 +49,21 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
     struct `ExtendedRcode Tests` {
         @Test
         func `Zero extended RCODE`() {
-            #expect(RFC_6891.ExtendedRcode.zero.rawValue == 0)
+            #expect(IETF.RFC.`6891`.ExtendedRcode.zero.rawValue == 0)
         }
 
         @Test
         func `Full RCODE calculation`() {
-            let extended = RFC_6891.ExtendedRcode(rawValue: 1)
+            let extended = IETF.RFC.`6891`.ExtendedRcode(rawValue: 1)
             let full = extended.fullRcode(headerRcode: 0)
             #expect(full == 16)  // BADVERS
         }
 
         @Test
         func `Known RCODE values`() {
-            #expect(RFC_6891.Rcode.noError == 0)
-            #expect(RFC_6891.Rcode.badVersion == 16)
-            #expect(RFC_6891.Rcode.badCookie == 23)
+            #expect(IETF.RFC.`6891`.Rcode.noError == 0)
+            #expect(IETF.RFC.`6891`.Rcode.badVersion == 16)
+            #expect(IETF.RFC.`6891`.Rcode.badCookie == 23)
         }
     }
 
@@ -71,21 +71,21 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
     struct `Option Tests` {
         @Test
         func `Option code values`() {
-            #expect(RFC_6891.Option.Code.nsid.rawValue == 3)
-            #expect(RFC_6891.Option.Code.clientSubnet.rawValue == 8)
-            #expect(RFC_6891.Option.Code.cookie.rawValue == 10)
-            #expect(RFC_6891.Option.Code.padding.rawValue == 12)
+            #expect(IETF.RFC.`6891`.Option.Code.nsid.rawValue == 3)
+            #expect(IETF.RFC.`6891`.Option.Code.clientSubnet.rawValue == 8)
+            #expect(IETF.RFC.`6891`.Option.Code.cookie.rawValue == 10)
+            #expect(IETF.RFC.`6891`.Option.Code.padding.rawValue == 12)
         }
 
         @Test
         func `Create and serialize option`() throws {
-            let option = try RFC_6891.Option(
+            let option = try IETF.RFC.`6891`.Option(
                 code: .nsid,
                 data: [Byte](utf8: "test")
             )
 
             var buffer: [Byte] = []
-            RFC_6891.Option.serialize(option, into: &buffer)
+            IETF.RFC.`6891`.Option.serialize(option, into: &buffer)
 
             // 2 bytes code + 2 bytes length + 4 bytes data
             #expect(buffer.count == 8)
@@ -99,10 +99,10 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `Option data at the 16-bit length limit is accepted`() throws {
-            let option = try RFC_6891.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65535))
+            let option = try IETF.RFC.`6891`.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65535))
 
             var buffer: [Byte] = []
-            RFC_6891.Option.serialize(option, into: &buffer)
+            IETF.RFC.`6891`.Option.serialize(option, into: &buffer)
 
             #expect(buffer[2] == Byte(0xFF))
             #expect(buffer[3] == Byte(0xFF))
@@ -110,8 +110,8 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `Option data beyond the 16-bit length limit is refused`() {
-            #expect(throws: RFC_6891.Option.Error.dataTooLong(65536)) {
-                try RFC_6891.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65536))
+            #expect(throws: IETF.RFC.`6891`.Option.Error.dataTooLong(65536)) {
+                try IETF.RFC.`6891`.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65536))
             }
         }
     }
@@ -120,7 +120,7 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
     struct `OPT Record Tests` {
         @Test
         func `Default OPT record`() {
-            let opt = RFC_6891.OPT.default
+            let opt = IETF.RFC.`6891`.OPT.default
 
             #expect(opt.udpPayloadSize == 4096)
             #expect(opt.extendedRcode == .zero)
@@ -131,20 +131,20 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `DNSSEC OPT record`() {
-            let opt = RFC_6891.OPT.dnssec
+            let opt = IETF.RFC.`6891`.OPT.dnssec
 
             #expect(opt.dnssecOK == true)
         }
 
         @Test
         func `Custom OPT record`() throws {
-            let opt = try RFC_6891.OPT(
+            let opt = try IETF.RFC.`6891`.OPT(
                 udpPayloadSize: 1232,
                 extendedRcode: .zero,
                 version: .zero,
                 dnssecOK: true,
                 options: [
-                    try RFC_6891.Option(code: .padding, data: Array(repeating: 0, count: 10))
+                    try IETF.RFC.`6891`.Option(code: .padding, data: Array(repeating: 0, count: 10))
                 ]
             )
 
@@ -155,7 +155,7 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `Serialize OPT record`() throws {
-            let opt = try RFC_6891.OPT(
+            let opt = try IETF.RFC.`6891`.OPT(
                 udpPayloadSize: 4096,
                 extendedRcode: .zero,
                 version: .zero,
@@ -164,7 +164,7 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
             )
 
             var buffer: [Byte] = []
-            RFC_6891.OPT.serialize(opt, into: &buffer)
+            IETF.RFC.`6891`.OPT.serialize(opt, into: &buffer)
 
             // NAME (1) + TYPE (2) + CLASS (2) + TTL (4) + RDLENGTH (2) = 11 bytes minimum
             #expect(buffer.count == 11)
@@ -187,10 +187,10 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `Serialize OPT with DNSSEC flag`() throws {
-            let opt = try RFC_6891.OPT(dnssecOK: true)
+            let opt = try IETF.RFC.`6891`.OPT(dnssecOK: true)
 
             var buffer: [Byte] = []
-            RFC_6891.OPT.serialize(opt, into: &buffer)
+            IETF.RFC.`6891`.OPT.serialize(opt, into: &buffer)
 
             // TTL byte 2 should have DO bit set (0x80)
             #expect(buffer[7] == Byte(0x80))
@@ -198,14 +198,14 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `Serialize OPT with options`() throws {
-            let opt = try RFC_6891.OPT(
+            let opt = try IETF.RFC.`6891`.OPT(
                 options: [
-                    try RFC_6891.Option(code: .nsid, data: [0x01, 0x02, 0x03])
+                    try IETF.RFC.`6891`.Option(code: .nsid, data: [0x01, 0x02, 0x03])
                 ]
             )
 
             var buffer: [Byte] = []
-            RFC_6891.OPT.serialize(opt, into: &buffer)
+            IETF.RFC.`6891`.OPT.serialize(opt, into: &buffer)
 
             // RDLENGTH should be 7 (2 code + 2 length + 3 data)
             #expect(buffer[9] == Byte(0))
@@ -217,19 +217,19 @@ extension `RFC_6891 Tests`.`RFC 6891 EDNS Tests` {
 
         @Test
         func `Options whose RDATA exceeds the 16-bit length limit are refused`() throws {
-            let option = try RFC_6891.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65531))
+            let option = try IETF.RFC.`6891`.Option(code: .padding, data: [Byte](repeating: Byte(0), count: 65531))
 
-            #expect(throws: RFC_6891.OPT.Error.optionsTooLong(65539)) {
-                try RFC_6891.OPT(options: [option, try RFC_6891.Option(code: .padding, data: [])])
+            #expect(throws: IETF.RFC.`6891`.OPT.Error.optionsTooLong(65539)) {
+                try IETF.RFC.`6891`.OPT(options: [option, try IETF.RFC.`6891`.Option(code: .padding, data: [])])
             }
-            #expect(try RFC_6891.OPT(options: [option]).options.count == 1)
+            #expect(try IETF.RFC.`6891`.OPT(options: [option]).options.count == 1)
         }
 
         @Test
         func `UDP payload size constants`() {
-            #expect(RFC_6891.OPT.minimumUDPPayloadSize == 512)
-            #expect(RFC_6891.OPT.defaultUDPPayloadSize == 4096)
-            #expect(RFC_6891.OPT.maximumUDPPayloadSize == 65535)
+            #expect(IETF.RFC.`6891`.OPT.minimumUDPPayloadSize == 512)
+            #expect(IETF.RFC.`6891`.OPT.defaultUDPPayloadSize == 4096)
+            #expect(IETF.RFC.`6891`.OPT.maximumUDPPayloadSize == 65535)
         }
     }
 }

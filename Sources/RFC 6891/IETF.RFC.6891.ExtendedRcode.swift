@@ -1,4 +1,4 @@
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
     /// Extended RCODE
     ///
     /// The upper 8 bits of the extended 12-bit RCODE are carried in the
@@ -28,7 +28,7 @@ extension RFC_6891 {
     }
 }
 
-extension RFC_6891.ExtendedRcode {
+extension IETF.RFC.`6891`.ExtendedRcode {
     /// No extended RCODE (use header RCODE only)
     public static let zero = Self(__unchecked: (), rawValue: 0)
 
@@ -41,5 +41,5 @@ extension RFC_6891.ExtendedRcode {
     }
 }
 
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
 }

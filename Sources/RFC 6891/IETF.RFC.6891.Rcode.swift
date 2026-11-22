@@ -1,4 +1,4 @@
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
     /// Extended RCODE values (12-bit)
     ///
     /// These are the full 12-bit RCODE values used with EDNS.
@@ -6,7 +6,7 @@ extension RFC_6891 {
     }
 }
 
-extension RFC_6891.Rcode {
+extension IETF.RFC.`6891`.Rcode {
     /// NOERROR (0): No error
     public static let noError: UInt16 = 0
 

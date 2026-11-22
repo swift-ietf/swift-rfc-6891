@@ -1,6 +1,6 @@
 public import Binary
 
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
     /// OPT Pseudo-Resource Record
     ///
     /// The OPT pseudo-RR is placed in the additional section of DNS messages
@@ -68,14 +68,14 @@ extension RFC_6891 {
     }
 }
 
-extension RFC_6891.OPT {
+extension IETF.RFC.`6891`.OPT {
     /// Creates an OPT record
     public init(
         udpPayloadSize: UInt16 = 4096,
-        extendedRcode: RFC_6891.ExtendedRcode = .zero,
-        version: RFC_6891.Version = .zero,
+        extendedRcode: IETF.RFC.`6891`.ExtendedRcode = .zero,
+        version: IETF.RFC.`6891`.Version = .zero,
         dnssecOK: Bool = false,
-        options: [RFC_6891.Option] = []
+        options: [IETF.RFC.`6891`.Option] = []
     ) throws(Error) {
         let length = options.reduce(0) { $0 + 4 + $1.data.count }
         guard length <= Self.maximumOptionsLength else {
@@ -92,7 +92,7 @@ extension RFC_6891.OPT {
     }
 }
 
-extension RFC_6891.OPT {
+extension IETF.RFC.`6891`.OPT {
     /// Minimum recommended UDP payload size (512 bytes)
     public static let minimumUDPPayloadSize: UInt16 = 512
 
@@ -105,7 +105,7 @@ extension RFC_6891.OPT {
     public static let maximumOptionsLength = Int(UInt16.max)
 }
 
-extension RFC_6891.OPT: Binary.Serializable {
+extension IETF.RFC.`6891`.OPT: Binary.Serializable {
     /// Serializes the OPT record to wire format
     ///
     /// This serializes the complete OPT pseudo-RR including:
@@ -137,7 +137,7 @@ extension RFC_6891.OPT: Binary.Serializable {
 
         var optionData: [Byte] = []
         for option in opt.options {
-            RFC_6891.Option.serialize(option, into: &optionData)
+            IETF.RFC.`6891`.Option.serialize(option, into: &optionData)
         }
 
         buffer.append(contentsOf: UInt16(optionData.count).bytes(endianness: .big))
@@ -146,7 +146,7 @@ extension RFC_6891.OPT: Binary.Serializable {
     }
 }
 
-extension RFC_6891.OPT {
+extension IETF.RFC.`6891`.OPT {
     /// Creates a default EDNS(0) OPT record
     ///
     /// Uses recommended defaults:

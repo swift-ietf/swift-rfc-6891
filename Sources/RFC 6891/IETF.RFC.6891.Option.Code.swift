@@ -1,6 +1,6 @@
 import Binary
 
-extension RFC_6891.Option {
+extension IETF.RFC.`6891`.Option {
     /// EDNS Option Code
     ///
     /// Option codes are assigned by IANA.

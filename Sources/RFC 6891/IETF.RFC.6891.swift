@@ -1,3 +1,4 @@
+public import IETF_RFC
 /// RFC 6891: Extension Mechanisms for DNS (EDNS(0))
 ///
 /// This namespace contains types for EDNS as defined in RFC 6891 from April 2013.
@@ -46,9 +47,11 @@
 ///
 /// - [RFC 6891](https://www.rfc-editor.org/rfc/rfc6891)
 /// - ``RFC_1035`` for the base DNS specification
-public enum RFC_6891 {}
+extension IETF.RFC {
+    public enum `6891` {}
+}
 
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
     /// OPT resource record type value
     ///
     /// Per RFC 6891 Section 6.1.1, the OPT RR has type code 41.

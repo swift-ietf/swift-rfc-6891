@@ -1,4 +1,4 @@
-extension RFC_6891.OPT {
+extension IETF.RFC.`6891`.OPT {
 
     public enum Error: Swift::Error, Sendable, Equatable {
 
@@ -6,7 +6,7 @@ extension RFC_6891.OPT {
     }
 }
 
-extension RFC_6891.OPT.Error: CustomStringConvertible {
+extension IETF.RFC.`6891`.OPT.Error: CustomStringConvertible {
     public var description: String {
         switch self {
         case .optionsTooLong(let length):

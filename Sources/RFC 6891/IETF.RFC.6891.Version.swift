@@ -1,4 +1,4 @@
-extension RFC_6891 {
+extension IETF.RFC.`6891` {
     /// EDNS Version
     ///
     /// The EDNS version is carried in bits 8-15 of the OPT record TTL field.
@@ -24,7 +24,7 @@ extension RFC_6891 {
     }
 }
 
-extension RFC_6891.Version {
+extension IETF.RFC.`6891`.Version {
     /// EDNS version 0 (current version)
     public static let zero = Self(__unchecked: (), rawValue: 0)
 
