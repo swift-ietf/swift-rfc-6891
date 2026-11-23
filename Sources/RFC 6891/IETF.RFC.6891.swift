@@ -1,4 +1,5 @@
 public import IETF_RFC
+
 /// RFC 6891: Extension Mechanisms for DNS (EDNS(0))
 ///
 /// This namespace contains types for EDNS as defined in RFC 6891 from April 2013.
